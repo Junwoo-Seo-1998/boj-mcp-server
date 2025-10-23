@@ -63,7 +63,7 @@ def create_server():
     # 2) 문제 검색 툴
     @app.tool(
         name="solvedac_search_problems",
-        description="난이도/태그/키워드 쿼리로 문제 검색 (예: tier:g5..p5 tag:dfs)"
+        description="난이도/태그/키워드 쿼리로 문제 검색 (예: tier:g5..p5 tag:dfs) 사용자가 개수를 제한하지 않으면 5개로 지정하세요."
     )
     async def search_problems_tool(
         query: str = Field(..., description="검색 쿼리 (예: 'tier:g5..p5 tag:dfs')"),
@@ -71,9 +71,10 @@ def create_server():
 
         # +++ 이 부분이 추가됨 +++
         limit: Optional[int] = Field(
-            None,  # 기본값은 None (제한 없음)
+            default=5,  
+            le=20,
             ge=1,  # 1 이상의 값만 허용
-            description="결과를 상위 N개로 제한합니다. (지정하지 않으면 1페이지 전체, 최대 50개 반환)"
+            description="결과를 상위 N개로 제한합니다."
         )
     ):
         # 1. 일단 1페이지(최대 50개) 데이터를 '코어 함수'로 가져옵니다.
@@ -81,7 +82,8 @@ def create_server():
         
         # +++ 이 부분이 추가됨 +++
         # 2. 만약 AI가 limit 값을 지정했다면 (None이 아니라면)
-        if limit is not None and response.items:
+        
+        if response.items:
             # 3. 가져온 50개의 목록(items)을 요청한 limit 개수만큼 잘라냅니다.
             response.items = response.items[:limit]
             # (선택사항) count 값도 실제 반환 개수에 맞게 수정해 줍니다.

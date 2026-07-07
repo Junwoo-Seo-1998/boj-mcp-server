@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/junwoo-seo-1998-boj-mcp-server-badge.png)](https://mseep.ai/app/junwoo-seo-1998-boj-mcp-server)
+
 # MCP Server for BOJ
 
 ### **BOJ를 위한 Model Context Protocol (MCP) 서버입니다.**  
